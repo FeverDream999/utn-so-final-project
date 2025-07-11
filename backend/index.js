@@ -9,20 +9,6 @@ const port = 3000;
 app.use(express.json());
 
 // Routes
-app.get("/api/ping", (req, res) => res.json({ message: "pong" }));
-app.get("/api/greet", (req, res) => {
-  const name = req.query.name || "World";
-  res.json({ message: `Hola, ${name}!` });
-});
-app.get("/api/students", async (req, res) => {
-  try {
-    const result = await db.query("SELECT * FROM students");
-    res.json(result.rows);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("DB error");
-  }
-});
 app.post("/api/students", async (req, res) => {
   const { name } = req.body;
 
@@ -39,6 +25,22 @@ app.post("/api/students", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).send("Error al insertar en la base de datos");
+  }
+});
+
+
+app.get("/api/ping", (req, res) => res.json({ message: "pong" }));
+app.get("/api/greet", (req, res) => {
+  const name = req.query.name || "World";
+  res.json({ message: `Hola, ${name}!` });
+});
+app.get("/api/students", async (req, res) => {
+  try {
+    const result = await db.query("SELECT * FROM students");
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("DB error");
   }
 });
 
