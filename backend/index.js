@@ -14,6 +14,10 @@ app.get("/api/greet", (req, res) => {
   const name = req.query.name || "World";
   res.json({ message: `Hello, ${name}!` });
 });
+app.get('/api/greet', (req, res) => {
+  const name = req.query.name || "vos...";
+  res.json({ message: `Hola, ${name}!` });
+});
 app.get("/api/students", async (req, res) => {
   try {
     const result = await db.query("SELECT * FROM students");
