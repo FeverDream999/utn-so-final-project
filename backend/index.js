@@ -14,10 +14,6 @@ app.get("/api/greet", (req, res) => {
   const name = req.query.name || "World";
   res.json({ message: `Hola, ${name}!` });
 });
-app.get('/api/greet', (req, res) => {
-  const name = req.query.name || "vos...";
-  res.json({ message: `Hola, ${name}!` });
-});
 app.get("/api/students", async (req, res) => {
   try {
     const result = await db.query("SELECT * FROM students");
@@ -25,6 +21,24 @@ app.get("/api/students", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).send("DB error");
+  }
+});
+app.post("/api/students", async (req, res) => {
+  const { name } = req.body;
+
+  if (!name) {
+    return res.status(400).json({ error: "Falta el nombre" });
+  }
+
+  try {
+    const result = await db.query(
+      "INSERT INTO students (name) VALUES ($1) RETURNING *",
+      [name]
+    );
+    res.status(201).json(result.rows[0]); 
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Error al insertar en la base de datos");
   }
 });
 
