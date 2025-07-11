@@ -9,3 +9,16 @@ document.getElementById("loadButton").addEventListener("click", async () => {
     tbody.appendChild(row);
   });
 });
+function saludar() {
+  const nombre = document.getElementById("nombre").value;
+
+  fetch(`/api/greet?name=${encodeURIComponent(nombre)}`)
+    .then(response => response.json())
+    .then(data => {
+      document.getElementById("respuesta").textContent = data.message;
+    })
+    .catch(error => {
+      document.getElementById("respuesta").textContent = "Error";
+      console.error(error);
+    });
+}
